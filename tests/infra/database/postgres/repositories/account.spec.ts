@@ -26,4 +26,14 @@ describe('AccountRepository', () => {
       expect(result).toBe(true)
     })
   })
+
+  describe('create()', () => {
+    it('should create a account on success', async () => {
+      await sut.create({ name, email, password })
+
+      const user = await prisma.user.findFirst({ where: { email } })
+
+      expect(user).toBeTruthy()
+    })
+  })
 })
