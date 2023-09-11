@@ -18,6 +18,7 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "types": ["@types/jest", "@quramy/jest-prisma"],
     "paths": { "@/*": ["*"], "@/tests/*": ["../tests/*"] }
   },
   "include": ["src", "tests"]
