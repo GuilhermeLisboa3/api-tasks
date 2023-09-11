@@ -51,4 +51,10 @@ describe('AddAccount', () => {
     expect(accountRepository.create).toHaveBeenCalledWith({ name, email, password: hashPassword })
     expect(accountRepository.create).toHaveBeenCalledTimes(1)
   })
+
+  it('should return undefined on success', async () => {
+    const result = await sut({ name, email, password })
+
+    expect(result).toBeUndefined()
+  })
 })
