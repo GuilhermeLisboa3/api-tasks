@@ -35,5 +35,11 @@ describe('BcryptAdapter', () => {
       expect(fakeBcrypt.hash).toHaveBeenCalledWith(plaintext, salt)
       expect(fakeBcrypt.hash).toHaveBeenCalledTimes(1)
     })
+
+    it('should return a digest on success', async () => {
+      const hashed = await sut.generate({ plaintext })
+
+      expect(hashed).toBe(digest)
+    })
   })
 })
