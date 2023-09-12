@@ -1,4 +1,5 @@
-import { serverError, type HttpResponse } from '@/application/helpers'
+import { serverError, type HttpResponse, badRequest } from '@/application/helpers'
+import { FieldInUseError } from '../../domain/errors'
 
 export abstract class Controller {
   abstract perform (httpRequest?: any): Promise<HttpResponse>
@@ -6,6 +7,7 @@ export abstract class Controller {
     try {
       return await this.perform(httpRequest)
     } catch (error) {
+      if (error instanceof FieldInUseError) return badRequest(error)
       return serverError(error)
     }
   }
