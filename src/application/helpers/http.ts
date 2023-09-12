@@ -2,6 +2,11 @@ import { ServerError } from '../errors'
 
 export type HttpResponse<T = any> = { statusCode: number, data: T }
 
+export const created = <T = any> (data?: T): HttpResponse<T | undefined> => ({
+  statusCode: 201,
+  data
+})
+
 export const badRequest = (error: Error): HttpResponse<Error> => ({
   statusCode: 400,
   data: error
