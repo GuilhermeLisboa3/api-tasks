@@ -1,7 +1,6 @@
-import { type Controller } from '@/application/controllers/controller'
+import { type HttpResponse } from '@/application/helpers'
 
-export const nestResponseAdapter = (controller: Controller) => async (req, res) => {
-  const { statusCode, data } = await controller.handle({ ...req.body, ...req.params })
+export const nestResponseAdapter = async ({ data, statusCode }: HttpResponse, res): Promise<HttpResponse> => {
   const json = [201].includes(statusCode) ? data : { error: data.message }
-  res.status(statusCode).json(json)
+  return res.status(statusCode).json(json)
 }
