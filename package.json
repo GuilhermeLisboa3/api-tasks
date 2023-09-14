@@ -8,7 +8,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main",
     "lint": "npx eslint",
     "lint:fix": "npm run lint -- --fix",
     "test": "jest --passWithNoTests --no-cache --runInBand",
@@ -22,6 +22,7 @@
   "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
+    "@nestjs/cli": "^10.1.17",
     "@quramy/jest-prisma": "^1.5.0",
     "@types/bcrypt": "^5.0.0",
     "@types/jest": "^29.5.4",

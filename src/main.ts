@@ -1,3 +1,4 @@
+import './main/config/module-alias'
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './main/app.module'
 import { prisma } from '@/infra/database/postgres/helpers'
