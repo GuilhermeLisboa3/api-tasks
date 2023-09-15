@@ -1,6 +1,6 @@
 import * as request from 'supertest'
 import { Test } from '@nestjs/testing'
-import { type INestApplication } from '@nestjs/common'
+import { ValidationPipe, type INestApplication } from '@nestjs/common'
 import { accountParams } from '@/tests/mocks'
 import { RoutesModule } from '@/main/routes/routes.module'
 import { FieldInUseError } from '@/domain/errors'
@@ -17,6 +17,7 @@ describe('Account Route', () => {
       .compile()
 
     app = moduleRef.createNestApplication()
+    app.useGlobalPipes(new ValidationPipe())
     await app.init()
   })
 
@@ -40,6 +41,15 @@ describe('Account Route', () => {
 
       expect(status).toBe(400)
       expect(error).toEqual(new FieldInUseError('email').message)
+    })
+
+    it('should return return 400 if has invalid data', async () => {
+      const { status, body } = await request(app.getHttpServer())
+        .post('/register')
+        .send({ email, password })
+
+      expect(status).toBe(400)
+      expect(body.message[0]).toEqual('name should not be empty')
     })
   })
 })
