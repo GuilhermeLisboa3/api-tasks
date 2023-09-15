@@ -1,5 +1,6 @@
 import { accountParams } from '@/tests/mocks/'
 import { type LoadAccountByEmail } from '@/domain/contracts/database/repositories/account'
+import { type HashComparer } from '@/domain/contracts/gateways'
 import { type Authentication, authenticationUseCase } from '@/domain/use-cases/account'
 import { AuthenticationError } from '@/domain/errors'
 
@@ -9,6 +10,7 @@ describe('Authentication', () => {
   let sut: Authentication
 
   const accountRepository = mock<LoadAccountByEmail>()
+  const hash = mock<HashComparer>()
   const { email, password, name, id } = accountParams
 
   beforeAll(() => {
@@ -16,7 +18,7 @@ describe('Authentication', () => {
   })
 
   beforeEach(() => {
-    sut = authenticationUseCase(accountRepository)
+    sut = authenticationUseCase(accountRepository, hash)
   })
 
   it('should call LoadAccountByEmail with correct email', async () => {
@@ -32,5 +34,12 @@ describe('Authentication', () => {
     const result = sut({ email, password })
 
     await expect(result).rejects.toThrow(new AuthenticationError())
+  })
+
+  it('should call hashComparer with correct values', async () => {
+    await sut({ email, password })
+
+    expect(hash.compare).toHaveBeenCalledWith({ plaintext: password, digest: password })
+    expect(hash.compare).toHaveBeenCalledTimes(1)
   })
 })
