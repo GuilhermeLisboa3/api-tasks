@@ -12,7 +12,7 @@ describe('Authentication', () => {
   const accountRepository = mock<LoadAccountByEmail>()
   const hash = mock<HashComparer>()
   const token = mock<TokenGenerator>()
-  const { email, password, name, id } = accountParams
+  const { email, password, name, id, accessToken } = accountParams
 
   beforeAll(() => {
     accountRepository.loadByEmail.mockResolvedValue({ id, name, email, password })
@@ -21,6 +21,7 @@ describe('Authentication', () => {
   beforeEach(() => {
     sut = authenticationUseCase(accountRepository, hash, token)
     hash.compare.mockResolvedValue(true)
+    token.generate.mockResolvedValue(accessToken)
   })
 
   it('should call LoadAccountByEmail with correct email', async () => {
@@ -58,5 +59,11 @@ describe('Authentication', () => {
 
     expect(token.generate).toHaveBeenCalledWith({ key: id })
     expect(token.generate).toHaveBeenCalledTimes(1)
+  })
+
+  it('should return name and accessToken on success', async () => {
+    const result = await sut({ email, password })
+
+    expect(result).toEqual({ name, accessToken })
   })
 })
