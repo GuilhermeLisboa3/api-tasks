@@ -36,4 +36,12 @@ describe('AccountRepository', () => {
       expect(user).toBeTruthy()
     })
   })
+
+  describe('loadByEmail()', () => {
+    it('should return undefined if account does not exists', async () => {
+      const result = await sut.loadByEmail({ email })
+
+      expect(result).toBeUndefined()
+    })
+  })
 })
