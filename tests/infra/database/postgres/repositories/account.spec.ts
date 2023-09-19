@@ -4,7 +4,7 @@ import { prisma } from '@/infra/database/postgres/helpers'
 
 describe('AccountRepository', () => {
   let sut: AccountRepository
-  const { email, name, password } = accountParams
+  const { id, email, name, password } = accountParams
 
   beforeEach(async () => {
     await resetDataBase()
@@ -42,6 +42,19 @@ describe('AccountRepository', () => {
       const result = await sut.loadByEmail({ email })
 
       expect(result).toBeUndefined()
+    })
+
+    it('should return account on success', async () => {
+      await prisma.user.create({ data: { id, name, email, password } })
+
+      const result = await sut.loadByEmail({ email })
+
+      expect(result).toEqual({
+        id,
+        name,
+        email,
+        password
+      })
     })
   })
 })
