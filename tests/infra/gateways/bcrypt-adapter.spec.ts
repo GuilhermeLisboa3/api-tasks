@@ -60,5 +60,13 @@ describe('BcryptAdapter', () => {
 
       expect(result).toBeTruthy()
     })
+
+    it('should return false when compare fails', async () => {
+      fakeBcrypt.compare.mockImplementation(() => false)
+
+      const result = await sut.compare({ plaintext, digest })
+
+      expect(result).toBeFalsy()
+    })
   })
 })
