@@ -9,7 +9,11 @@ describe('LoginController', () => {
 
   const authentication = jest.fn()
 
-  const { email, password } = accountParams
+  const { email, password, name, accessToken } = accountParams
+
+  beforeAll(() => {
+    authentication.mockResolvedValue({ name, accessToken })
+  })
 
   beforeEach(() => {
     sut = new LoginController(authentication)
@@ -32,5 +36,12 @@ describe('LoginController', () => {
 
     expect(statusCode).toBe(401)
     expect(data).toEqual(new UnauthorizedError())
+  })
+
+  it('should return ok if valid data is provided', async () => {
+    const { statusCode, data } = await sut.handle({ email, password })
+
+    expect(statusCode).toBe(200)
+    expect(data).toEqual({ name, accessToken })
   })
 })
