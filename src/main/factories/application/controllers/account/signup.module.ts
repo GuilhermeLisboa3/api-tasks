@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { type AddAccount, addAccountUseCase } from '@/domain/use-cases/account'
 import { SignUpController } from '@/application/controllers/account'
-import { AddAccountModule } from '@/main/factories/domain/use-cases/account/add-account.module'
+import { AddAccountModule } from '@/main/factories/domain/use-cases/account'
 
 @Module({
   imports: [AddAccountModule],
