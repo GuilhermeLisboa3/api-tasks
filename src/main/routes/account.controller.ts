@@ -1,9 +1,13 @@
-import { Body, Controller, Post, Res } from '@nestjs/common'
 import { LoginController, SignUpController } from '@/application/controllers/account'
-import { nestResponseAdapter } from '../adapters'
-import { type HttpResponse } from '../../application/helpers'
-import { LoginDto, SignUpDto } from './dto/account'
+import { nestResponseAdapter } from '@/main/adapters'
+import { type HttpResponse } from '@/application/helpers'
+import { LoginDto, SignUpDto } from '@/main/routes/dto/account'
+import { swaggerSignUpResponses } from '@/main/docs/swagger/paths/account/signup'
 
+import { Body, Controller, Post, Res } from '@nestjs/common'
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiTags } from '@nestjs/swagger'
+
+@ApiTags('account')
 @Controller('')
 export class AccountController {
   constructor (
@@ -11,6 +15,9 @@ export class AccountController {
     private readonly loginController: LoginController
   ) {}
 
+  @ApiCreatedResponse(swaggerSignUpResponses.created)
+  @ApiBadRequestResponse(swaggerSignUpResponses.badRequest)
+  @ApiInternalServerErrorResponse(swaggerSignUpResponses.internalServerError)
   @Post('register')
   async create (@Body() input: SignUpDto, @Res() res): Promise<HttpResponse> {
     const response = await this.signUpController.handle(input)

@@ -13,7 +13,7 @@ export class ValidationPipe implements PipeTransform<any> {
     if (errors.length > 0) {
       const messagensErrors = errors[0].constraints
       const firstMessageError = Object.keys(errors[0].constraints)[0]
-      throw new BadRequestException({ message: messagensErrors[firstMessageError] })
+      throw new BadRequestException({ error: messagensErrors[firstMessageError] })
     }
     return value
   }
