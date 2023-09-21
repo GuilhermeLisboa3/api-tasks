@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common'
 import { JwtAdapter } from '@/infra/gateways'
-import { env } from '@/main/config/env'
+import { ConfigService } from '@nestjs/config'
 
 @Module({
   providers: [
     {
       provide: JwtAdapter,
-      useFactory: () => {
-        return new JwtAdapter(env.JWT.secret)
-      }
+      useFactory: (config: ConfigService) => {
+        return new JwtAdapter(config.get<string>('secret'))
+      },
+      inject: [ConfigService]
     }
   ],
   exports: [JwtAdapter]

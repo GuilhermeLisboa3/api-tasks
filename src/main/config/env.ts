@@ -1,5 +1,3 @@
-export const env = {
-  JWT: {
-    secret: process.env.JWTSECRET ?? 'KAGDHFIKASI1234Y0213897VSHAJDLFJHSAV321'
-  }
+export default function (): any {
+  return { secret: process.env.SECRET || 'kbsdkfbjaskodlfbop2i3u4gLJHvbaJLHVDJASHVD' }
 }

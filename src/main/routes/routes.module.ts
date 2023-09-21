@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
 import { AccountController } from './account.controller'
-import { SignUpControllerModule } from '../factories/application/controllers/account/signup.module'
+import { SignUpControllerModule, LoginControllerModule } from '../factories/application/controllers/account'
 
 @Module({
-  imports: [SignUpControllerModule],
+  imports: [SignUpControllerModule, LoginControllerModule],
   controllers: [AccountController]
 })
 export class RoutesModule {}
