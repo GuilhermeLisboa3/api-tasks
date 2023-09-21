@@ -2,6 +2,7 @@ import configuration from '@/main/config/env'
 import { accountParams } from '@/tests/mocks'
 import { RoutesModule } from '@/main/routes/routes.module'
 import { FieldInUseError } from '@/domain/errors'
+import { UnauthorizedError } from '@/application/errors'
 import { prisma } from '@/infra/database/postgres/helpers'
 
 import * as request from 'supertest'
@@ -69,6 +70,15 @@ describe('Account Route', () => {
         .post('/login')
         .send({ email, password })
         .expect(200)
+    })
+
+    it('should return 401 if account does not exists', async () => {
+      const { status, body: { error } } = await request(app.getHttpServer())
+        .post('/login')
+        .send({ email, password })
+
+      expect(status).toBe(401)
+      expect(error).toEqual(new UnauthorizedError().message)
     })
   })
 })
