@@ -1,10 +1,13 @@
-import * as request from 'supertest'
-import { Test } from '@nestjs/testing'
-import { ValidationPipe, type INestApplication } from '@nestjs/common'
+import configuration from '@/main/config/env'
 import { accountParams } from '@/tests/mocks'
 import { RoutesModule } from '@/main/routes/routes.module'
 import { FieldInUseError } from '@/domain/errors'
 import { prisma } from '@/infra/database/postgres/helpers'
+
+import * as request from 'supertest'
+import { Test } from '@nestjs/testing'
+import { ValidationPipe, type INestApplication } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
 
 describe('Account Route', () => {
   let app: INestApplication
@@ -12,7 +15,13 @@ describe('Account Route', () => {
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [RoutesModule]
+      imports: [
+        ConfigModule.forRoot({
+          isGlobal: true,
+          load: [configuration]
+        }),
+        RoutesModule
+      ]
     })
       .compile()
 
@@ -50,6 +59,16 @@ describe('Account Route', () => {
 
       expect(status).toBe(400)
       expect(body.message[0]).toEqual('name should not be empty')
+    })
+  })
+
+  describe('/POST login', () => {
+    it('should return 200 on success', async () => {
+      await request(app.getHttpServer()).post('/register').send({ name, email, password })
+      return await request(app.getHttpServer())
+        .post('/login')
+        .send({ email, password })
+        .expect(200)
     })
   })
 })
