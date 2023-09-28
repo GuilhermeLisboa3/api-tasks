@@ -44,4 +44,10 @@ describe('AddTasks', () => {
     expect(tasksRepository.create).toHaveBeenCalledWith({ title, description, completed: false })
     expect(tasksRepository.create).toHaveBeenCalledTimes(1)
   })
+
+  it('should return on success', async () => {
+    const result = await sut({ accountId, title, description })
+
+    expect(result).toBeUndefined()
+  })
 })
