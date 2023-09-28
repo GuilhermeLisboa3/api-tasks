@@ -57,4 +57,12 @@ describe('AccountRepository', () => {
       })
     })
   })
+
+  describe('loadById()', () => {
+    it('should return undefined if account does not exists', async () => {
+      const result = await sut.loadById({ id })
+
+      expect(result).toBeUndefined()
+    })
+  })
 })
