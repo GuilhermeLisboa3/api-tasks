@@ -1,9 +1,9 @@
 import configuration from '@/main/config/env'
-import { accountParams } from '@/tests/mocks'
+import { accountParams, resetDataBase } from '@/tests/mocks'
 import { RoutesModule } from '@/main/routes/routes.module'
 import { FieldInUseError } from '@/domain/errors'
 import { UnauthorizedError } from '@/application/errors'
-import { prisma } from '@/infra/database/postgres/helpers'
+import prisma from '@/infra/database/postgres/helpers/connection'
 
 import * as request from 'supertest'
 import { Test } from '@nestjs/testing'
@@ -13,6 +13,10 @@ import { ConfigModule } from '@nestjs/config'
 describe('Account Route', () => {
   let app: INestApplication
   const { email, name, password } = accountParams
+
+  beforeEach(async () => {
+    await resetDataBase()
+  })
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({

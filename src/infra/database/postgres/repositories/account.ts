@@ -1,5 +1,5 @@
 import { type CheckAccountByEmail, type AddAccountRepository, type LoadAccountByEmail } from '@/domain/contracts/database/repositories/account'
-import { prisma } from '@/infra/database/postgres/helpers'
+import prisma from '@/infra/database/postgres/helpers/connection'
 
 export class AccountRepository implements CheckAccountByEmail, AddAccountRepository, LoadAccountByEmail {
   async checkByEmail ({ email }: CheckAccountByEmail.Input): Promise<CheckAccountByEmail.Output> {

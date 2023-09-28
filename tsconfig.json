@@ -21,5 +21,5 @@
     "types": ["@types/jest", "@quramy/jest-prisma"],
     "paths": { "@/*": ["*"], "@/tests/*": ["../tests/*"] }
   },
-  "include": ["src", "tests"]
+  "include": ["src", "tests", "tests/infra/database/postgres/mocks/setup-prisma.ts"]
 }

@@ -1,6 +1,6 @@
 import { AccountRepository } from '@/infra/database/postgres/repositories'
 import { accountParams, resetDataBase } from '@/tests/mocks'
-import { prisma } from '@/infra/database/postgres/helpers'
+import prisma from '@/infra/database/postgres/helpers/connection'
 
 describe('AccountRepository', () => {
   let sut: AccountRepository
