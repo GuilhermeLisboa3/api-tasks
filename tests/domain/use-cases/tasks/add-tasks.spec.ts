@@ -41,7 +41,7 @@ describe('AddTasks', () => {
   it('should call AddTasksRepository with correct values', async () => {
     await sut({ accountId, title, description })
 
-    expect(tasksRepository.create).toHaveBeenCalledWith({ title, description, completed: false })
+    expect(tasksRepository.create).toHaveBeenCalledWith({ title, description, completed: false, accountId })
     expect(tasksRepository.create).toHaveBeenCalledTimes(1)
   })
 
