@@ -64,5 +64,18 @@ describe('AccountRepository', () => {
 
       expect(result).toBeUndefined()
     })
+
+    it('should return account on success', async () => {
+      await prisma.user.create({ data: { id, name, email, password } })
+
+      const result = await sut.loadById({ id })
+
+      expect(result).toEqual({
+        id,
+        name,
+        email,
+        password
+      })
+    })
   })
 })
