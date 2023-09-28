@@ -10,5 +10,5 @@ export type AddTasks = (input: Input) => Promise<Output>
 export const addTasksUseCase: Setup = (accountRepository, tasksRepository) => async ({ accountId, description, title }) => {
   const account = await accountRepository.loadById({ id: accountId })
   if (!account) throw new NotFoundError('accountId')
-  await tasksRepository.create({ title, description, completed: false })
+  await tasksRepository.create({ title, description, completed: false, accountId })
 }
