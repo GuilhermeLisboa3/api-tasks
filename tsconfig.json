@@ -18,7 +18,7 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "types": ["@types/jest", "@quramy/jest-prisma"],
+    "types": ["@types/jest"],
     "paths": { "@/*": ["*"], "@/tests/*": ["../tests/*"] }
   },
   "include": ["src", "tests", "tests/infra/database/postgres/mocks/setup-prisma.ts"]
