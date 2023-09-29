@@ -50,4 +50,10 @@ describe('AuthorizeUseCase', () => {
 
     await expect(promise).rejects.toThrow(new PermissionError())
   })
+
+  it('should return accountId on success', async () => {
+    const result = await sut({ accessToken })
+
+    expect(result).toEqual({ accountId: id })
+  })
 })
