@@ -1,6 +1,7 @@
 import configuration from '@/main/config/env'
 import { tasksParams, resetDataBase } from '@/tests/mocks'
 import { RoutesModule } from '@/main/routes/routes.module'
+import { NotFoundError } from '@/domain/errors'
 
 import * as request from 'supertest'
 import { Test } from '@nestjs/testing'
@@ -10,7 +11,7 @@ import { ConfigModule } from '@nestjs/config'
 describe('Account Route', () => {
   let app: INestApplication
 
-  const { title } = tasksParams
+  const { title, description } = tasksParams
 
   beforeEach(async () => {
     await resetDataBase()
@@ -45,6 +46,15 @@ describe('Account Route', () => {
 
       expect(status).toBe(400)
       expect(body.message[0]).toEqual('description should not be empty')
+    })
+
+    it('should return 404 if accountId is not valid', async () => {
+      const { status, body: { error } } = await request(app.getHttpServer())
+        .post('/add-tasks')
+        .send({ title, description, accountId: '10' })
+
+      expect(status).toBe(404)
+      expect(error).toEqual(new NotFoundError('accountId').message)
     })
   })
 })
