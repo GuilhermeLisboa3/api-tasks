@@ -1,6 +1,7 @@
 import { accountParams } from '@/tests/mocks'
 import { UnauthorizedError } from '@/application/errors'
 import { AuthenticationMiddleware } from '@/application/middlewares'
+import { AuthenticationError } from '@/domain/errors'
 
 describe('AuthenticationMiddleware', () => {
   let sut: AuthenticationMiddleware
@@ -39,5 +40,14 @@ describe('AuthenticationMiddleware', () => {
 
     expect(authorize).toHaveBeenCalledWith({ accessToken })
     expect(authorize).toHaveBeenCalledTimes(1)
+  })
+
+  it('should return unauthorized if authorize return AuthenticationError', async () => {
+    authorize.mockRejectedValueOnce(new AuthenticationError())
+
+    const { statusCode, data } = await sut.handle({ authorization })
+
+    expect(statusCode).toBe(401)
+    expect(data).toEqual(new UnauthorizedError())
   })
 })
