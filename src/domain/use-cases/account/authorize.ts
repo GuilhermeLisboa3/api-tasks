@@ -1,5 +1,5 @@
 import { type TokenValidator } from '@/domain/contracts/gateways'
-import { AuthenticationError } from '@/domain/errors'
+import { AuthenticationError, PermissionError } from '@/domain/errors'
 import { type LoadAccountById } from '@/domain/contracts/database/repositories/account'
 
 type Setup = (token: TokenValidator, accountRepository: LoadAccountById) => Authorize
@@ -12,5 +12,6 @@ export const authorizeUseCase: Setup = (token, accountRepository) => async ({ ac
   try {
     accountId = await token.validate({ token: accessToken })
   } catch (error) { throw new AuthenticationError() }
-  await accountRepository.loadById({ id: accountId })
+  const account = await accountRepository.loadById({ id: accountId })
+  if (!account) throw new PermissionError()
 }
