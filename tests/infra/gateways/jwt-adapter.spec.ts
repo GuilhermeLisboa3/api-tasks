@@ -43,11 +43,24 @@ describe('JwtAdapter', () => {
   })
 
   describe('validate()', () => {
+    let key: string
+
+    beforeAll(() => {
+      key = faker.string.uuid()
+      fakeJwt.verify.mockImplementation(() => ({ key }))
+    })
+
     it('should call verify with correct values', async () => {
       await sut.validate({ token })
 
       expect(fakeJwt.verify).toHaveBeenCalledWith(token, secret)
       expect(fakeJwt.verify).toHaveBeenCalledTimes(1)
+    })
+
+    it('should return a key on success', async () => {
+      const result = await sut.validate({ token })
+
+      expect(result).toBe(key)
     })
   })
 })
