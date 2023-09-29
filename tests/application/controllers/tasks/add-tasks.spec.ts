@@ -33,4 +33,11 @@ describe('AddTasksController', () => {
     expect(statusCode).toBe(404)
     expect(data).toEqual(new NotFoundError('accountId'))
   })
+
+  it('should return noContent on success', async () => {
+    const { statusCode, data } = await sut.perform({ accountId, title, description })
+
+    expect(statusCode).toBe(204)
+    expect(data).toBeNull()
+  })
 })
