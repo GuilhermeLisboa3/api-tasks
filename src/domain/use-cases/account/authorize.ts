@@ -4,7 +4,7 @@ import { type LoadAccountById } from '@/domain/contracts/database/repositories/a
 
 type Setup = (token: TokenValidator, accountRepository: LoadAccountById) => Authorize
 type Input = { accessToken: string }
-type Output = void
+type Output = { accountId: string }
 export type Authorize = (input: Input) => Promise<Output>
 
 export const authorizeUseCase: Setup = (token, accountRepository) => async ({ accessToken }) => {
@@ -14,4 +14,5 @@ export const authorizeUseCase: Setup = (token, accountRepository) => async ({ ac
   } catch (error) { throw new AuthenticationError() }
   const account = await accountRepository.loadById({ id: accountId })
   if (!account) throw new PermissionError()
+  return { accountId }
 }
