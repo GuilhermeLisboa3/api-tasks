@@ -10,6 +10,7 @@ export class JwtAdapter implements TokenGenerator {
   }
 
   async validate ({ token }: TokenValidator.Input): Promise<void> {
-    jwt.verify(token, this.secret)
+    const { key } = jwt.verify(token, this.secret) as any
+    return key
   }
 }
