@@ -1,6 +1,6 @@
 import { type AddTasks } from '@/domain/use-cases/tasks'
 import { Controller } from '../controller'
-import { type HttpResponse } from '@/application/helpers'
+import { noContent, type HttpResponse } from '@/application/helpers'
 
 type HttpRequest = { title: string, description: string, accountId: string }
 
@@ -9,6 +9,6 @@ export class AddTasksController extends Controller {
 
   async perform (input: HttpRequest): Promise<HttpResponse> {
     await this.addTasks(input)
-    return { statusCode: 200, data: null }
+    return noContent()
   }
 }

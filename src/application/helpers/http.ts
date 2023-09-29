@@ -2,13 +2,18 @@ import { ServerError, UnauthorizedError } from '../errors'
 
 export type HttpResponse<T = any> = { statusCode: number, data: T }
 
-export const ok = <T = any> (data?: T): HttpResponse<T | undefined> => ({
+export const ok = <T = any> (data?: T): HttpResponse<T> => ({
   statusCode: 200,
   data
 })
 
-export const created = <T = any> (): HttpResponse<T | undefined> => ({
+export const created = <T = any> (): HttpResponse<T> => ({
   statusCode: 201,
+  data: null
+})
+
+export const noContent = <T = any> (): HttpResponse<T> => ({
+  statusCode: 204,
   data: null
 })
 
