@@ -4,6 +4,7 @@ import { RoutesModule } from '@/main/routes/routes.module'
 import { FieldInUseError } from '@/domain/errors'
 import { UnauthorizedError } from '@/application/errors'
 import prisma from '@/infra/database/postgres/helpers/connection'
+import { AuthenticationMiddlewareModule } from '@/main/factories/application/middlewares'
 
 import * as request from 'supertest'
 import { Test } from '@nestjs/testing'
@@ -25,6 +26,7 @@ describe('Account Route', () => {
           isGlobal: true,
           load: [configuration]
         }),
+        AuthenticationMiddlewareModule,
         RoutesModule
       ]
     })
