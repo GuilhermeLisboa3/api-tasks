@@ -1,7 +1,7 @@
-import { type HttpResponse, unauthorized } from '@/application/helpers'
+import { type HttpResponse, unauthorized, forbidden } from '@/application/helpers'
 import { type Middleware } from '@/application/middlewares'
 import { type Authorize } from '@/domain/use-cases/account'
-import { AuthenticationError } from '@/domain/errors'
+import { AuthenticationError, PermissionError } from '@/domain/errors'
 
 type HttpRequest = { authorization: string }
 
@@ -15,6 +15,7 @@ export class AuthenticationMiddleware implements Middleware {
       await this.authorize({ accessToken })
     } catch (error) {
       if (error instanceof AuthenticationError) return unauthorized()
+      if (error instanceof PermissionError) return forbidden()
     }
   }
 }
