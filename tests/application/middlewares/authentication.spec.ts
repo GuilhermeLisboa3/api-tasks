@@ -1,7 +1,7 @@
 import { accountParams } from '@/tests/mocks'
-import { UnauthorizedError } from '@/application/errors'
+import { ForbiddenError, UnauthorizedError } from '@/application/errors'
 import { AuthenticationMiddleware } from '@/application/middlewares'
-import { AuthenticationError } from '@/domain/errors'
+import { AuthenticationError, PermissionError } from '@/domain/errors'
 
 describe('AuthenticationMiddleware', () => {
   let sut: AuthenticationMiddleware
@@ -49,5 +49,14 @@ describe('AuthenticationMiddleware', () => {
 
     expect(statusCode).toBe(401)
     expect(data).toEqual(new UnauthorizedError())
+  })
+
+  it('should return forbidden if authorize return PermissionError', async () => {
+    authorize.mockRejectedValueOnce(new PermissionError())
+
+    const { statusCode, data } = await sut.handle({ authorization })
+
+    expect(statusCode).toBe(403)
+    expect(data).toEqual(new ForbiddenError())
   })
 })
