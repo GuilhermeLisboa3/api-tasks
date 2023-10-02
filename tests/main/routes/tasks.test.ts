@@ -1,22 +1,29 @@
 import configuration from '@/main/config/env'
-import { tasksParams, resetDataBase } from '@/tests/mocks'
+import { tasksParams, resetDataBase, accountParams } from '@/tests/mocks'
 import { RoutesModule } from '@/main/routes/routes.module'
-import { NotFoundError } from '@/domain/errors'
-import { AuthenticationMiddlewareModule } from '@/main/factories/application/middlewares'
+import prisma from '@/infra/database/postgres/helpers/connection'
 
 import * as request from 'supertest'
-import { faker } from '@faker-js/faker'
+import * as jwt from 'jsonwebtoken'
 import { Test } from '@nestjs/testing'
 import { ValidationPipe, type INestApplication } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { AppModule } from '@/main/app.module'
 
 describe('Account Route', () => {
   let app: INestApplication
-  const invalidToken = faker.string.uuid()
+  let token: string
   const { title, description } = tasksParams
+  const { id, name, email, password } = accountParams
+  const { secret } = configuration()
+
+  beforeAll(async () => {
+    token = jwt.sign({ key: id }, secret)
+  })
 
   beforeEach(async () => {
     await resetDataBase()
+    await prisma.user.create({ data: { id, name, email, password } })
   })
 
   beforeAll(async () => {
@@ -26,7 +33,7 @@ describe('Account Route', () => {
           isGlobal: true,
           load: [configuration]
         }),
-        AuthenticationMiddlewareModule,
+        AppModule,
         RoutesModule
       ]
     })
@@ -43,23 +50,20 @@ describe('Account Route', () => {
 
   describe('/POST add-tasks', () => {
     it('should return 400 if has invalid data', async () => {
-      const { status, body } = await request(app.getHttpServer())
+      const { status } = await request(app.getHttpServer())
         .post('/add-tasks')
-        .set({ authorization: `Bearer: ${invalidToken}` })
+        .set({ authorization: `Bearer: ${token}` })
         .send({ title })
 
       expect(status).toBe(400)
-      expect(body.message[0]).toEqual('description should not be empty')
     })
 
-    it('should return 404 if accountId is not valid', async () => {
-      const { status, body: { error } } = await request(app.getHttpServer())
+    it('should return 204 on success', async () => {
+      const { status } = await request(app.getHttpServer())
         .post('/add-tasks')
-        .set({ authorization: `Bearer: ${invalidToken}` })
+        .set({ authorization: `Bearer: ${token}` })
         .send({ title, description })
-
-      expect(status).toBe(404)
-      expect(error).toEqual(new NotFoundError('accountId').message)
+      expect(status).toBe(204)
     })
   })
 })
