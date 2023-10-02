@@ -6,9 +6,13 @@ import { AuthenticationError, PermissionError } from '@/domain/errors'
 describe('AuthenticationMiddleware', () => {
   let sut: AuthenticationMiddleware
 
-  const { accessToken } = accountParams
+  const { accessToken, id: accountId } = accountParams
   const authorization = `Bearer ${accessToken}`
   const authorize = jest.fn()
+
+  beforeAll(() => {
+    authorize.mockResolvedValue({ accountId })
+  })
 
   beforeEach(() => {
     sut = new AuthenticationMiddleware(authorize)
@@ -58,5 +62,12 @@ describe('AuthenticationMiddleware', () => {
 
     expect(statusCode).toBe(403)
     expect(data).toEqual(new ForbiddenError())
+  })
+
+  it('should return ok on success', async () => {
+    const { statusCode, data } = await sut.handle({ authorization })
+
+    expect(statusCode).toBe(200)
+    expect(data).toEqual({ accountId })
   })
 })
