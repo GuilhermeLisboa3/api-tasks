@@ -4,6 +4,7 @@ import { SchemaError, LoginResponse } from './shemas'
 
 export function setupSwagger (app: INestApplication): void {
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Tasks Api')
     .setDescription('Tasks api to add and remove tasks')
     .setVersion('1.0')

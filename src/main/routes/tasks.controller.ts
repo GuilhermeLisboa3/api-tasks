@@ -4,9 +4,10 @@ import { type HttpResponse } from '@/application/helpers'
 import { AddTasksDto } from '@/main/routes/dto/tasks'
 import { swaggerBadRequest, swaggerInternalServerError, swaggerNoContent, swaggerNotFound } from '@/main/docs/swagger/paths'
 
-import { Body, Controller, Post, Res } from '@nestjs/common'
-import { ApiBadRequestResponse, ApiInternalServerErrorResponse, ApiTags, ApiNoContentResponse, ApiNotFoundResponse } from '@nestjs/swagger'
+import { Body, Controller, Post, Request, Res } from '@nestjs/common'
+import { ApiBadRequestResponse, ApiInternalServerErrorResponse, ApiTags, ApiNoContentResponse, ApiNotFoundResponse, ApiBearerAuth } from '@nestjs/swagger'
 
+@ApiBearerAuth()
 @ApiTags('tasks')
 @Controller('')
 export class TasksController {
@@ -19,8 +20,8 @@ export class TasksController {
   @ApiNotFoundResponse(swaggerNotFound())
   @ApiInternalServerErrorResponse(swaggerInternalServerError())
   @Post('/add-tasks')
-  async create (@Body() input: AddTasksDto, @Res() res): Promise<HttpResponse> {
-    const response = await this.addTasks.handle(input)
+  async create (@Request() req, @Body() input: AddTasksDto, @Res() res): Promise<HttpResponse> {
+    const response = await this.addTasks.handle({ ...input, ...req.user })
     return await nestResponseAdapter(response, res)
   }
 }
