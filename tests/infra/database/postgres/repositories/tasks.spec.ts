@@ -35,4 +35,16 @@ describe('TasksRepository', () => {
       expect(result).toBeUndefined()
     })
   })
+
+  describe('update()', () => {
+    it('should return undefined on success update', async () => {
+      await prisma.task.create({ data: { id, title, description, completed, userId: id } })
+
+      await sut.update({ id, title: 'any_title' })
+
+      const result = await prisma.task.findFirst({ where: { title: 'any_title' } })
+
+      expect(result).toBeTruthy()
+    })
+  })
 })
