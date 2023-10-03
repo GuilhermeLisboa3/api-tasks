@@ -27,5 +27,12 @@ describe('TasksRepository', () => {
 
       expect(result).toBeUndefined()
     })
+
+    it('should return task on success', async () => {
+      await prisma.task.create({ data: { title, description, completed, userId: id } })
+      const result = await sut.loadById({ id })
+
+      expect(result).toBeUndefined()
+    })
   })
 })
