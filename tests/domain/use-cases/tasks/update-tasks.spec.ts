@@ -41,4 +41,10 @@ describe('UpdateTasks', () => {
     expect(tasksRepository.update).toHaveBeenCalledWith({ title, description, id, completed })
     expect(tasksRepository.update).toHaveBeenCalledTimes(1)
   })
+
+  it('should return undefined on success', async () => {
+    const result = await sut({ title, description, id, completed })
+
+    expect(result).toBeUndefined()
+  })
 })
