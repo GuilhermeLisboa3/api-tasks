@@ -1,11 +1,14 @@
 import { type UpdateTask } from '@/domain/use-cases/tasks'
+import { Controller } from '../controller'
+import { type HttpResponse } from '@/application/helpers'
 
 type HttpRequest = { id: string, title?: string, description?: string, completed?: boolean }
 
-export class UpdateTaskController {
-  constructor (private readonly updateTask: UpdateTask) {}
+export class UpdateTaskController extends Controller {
+  constructor (private readonly updateTask: UpdateTask) { super() }
 
-  async perform (input: HttpRequest): Promise<void> {
+  async perform (input: HttpRequest): Promise<HttpResponse> {
     await this.updateTask(input)
+    return { statusCode: 200, data: null }
   }
 }
