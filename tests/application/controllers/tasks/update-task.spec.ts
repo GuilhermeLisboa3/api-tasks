@@ -1,5 +1,6 @@
 import { tasksParams } from '@/tests/mocks'
 import { UpdateTaskController } from '@/application/controllers/tasks'
+import { Controller } from '@/application/controllers/controller'
 
 describe('UpdateTaskController', () => {
   let sut: UpdateTaskController
@@ -10,6 +11,10 @@ describe('UpdateTaskController', () => {
 
   beforeEach(() => {
     sut = new UpdateTaskController(updateTask)
+  })
+
+  it('should extend Controller', async () => {
+    expect(sut).toBeInstanceOf(Controller)
   })
 
   it('should call updateTask with correct values', async () => {
