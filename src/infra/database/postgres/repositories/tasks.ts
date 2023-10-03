@@ -1,7 +1,7 @@
-import { type AddTasksRepository, type LoadTaskById } from '@/domain/contracts/database/repositories/tasks'
+import { type AddTasksRepository, type LoadTaskById, type UpdateTaskRepository } from '@/domain/contracts/database/repositories/tasks'
 import prisma from '@/infra/database/postgres/helpers/connection'
 
-export class TasksRepository implements AddTasksRepository, LoadTaskById {
+export class TasksRepository implements AddTasksRepository, LoadTaskById, UpdateTaskRepository {
   async create ({ accountId, completed, description, title }: AddTasksRepository.Input): Promise<AddTasksRepository.Output> {
     await prisma.task.create({ data: { userId: accountId, completed, description, title } })
   }
@@ -9,5 +9,9 @@ export class TasksRepository implements AddTasksRepository, LoadTaskById {
   async loadById ({ id }: LoadTaskById.Input): Promise<LoadTaskById.Output> {
     const task = await prisma.task.findFirst({ where: { id } })
     return task ?? undefined
+  }
+
+  async update ({ id, completed, description, title }: UpdateTaskRepository.Input): Promise<UpdateTaskRepository.Output> {
+    await prisma.task.update({ where: { id }, data: { completed, description, title } })
   }
 }
