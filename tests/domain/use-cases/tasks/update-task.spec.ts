@@ -1,12 +1,12 @@
 import { tasksParams } from '@/tests/mocks/'
 import { type LoadTaskById, type UpdateTaskRepository } from '@/domain/contracts/database/repositories/tasks'
-import { type UpdateTasks, updateTasksUseCase } from '@/domain/use-cases/tasks'
+import { type UpdateTask, updateTaskUseCase } from '@/domain/use-cases/tasks'
 import { NotFoundError } from '@/domain/errors'
 
 import { mock } from 'jest-mock-extended'
 
-describe('UpdateTasks', () => {
-  let sut: UpdateTasks
+describe('UpdateTask', () => {
+  let sut: UpdateTask
 
   const { title, description, id, completed } = tasksParams
 
@@ -17,7 +17,7 @@ describe('UpdateTasks', () => {
   })
 
   beforeEach(() => {
-    sut = updateTasksUseCase(tasksRepository)
+    sut = updateTaskUseCase(tasksRepository)
   })
 
   it('should call LoadTaskById with correct id', async () => {
