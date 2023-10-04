@@ -47,4 +47,19 @@ describe('TasksRepository', () => {
       expect(result).toBeTruthy()
     })
   })
+
+  describe('list()', () => {
+    it('should return list tasks on success', async () => {
+      await prisma.task.create({ data: { id, title, description, completed, userId: id } })
+
+      const result = await sut.list({ accountId: id })
+
+      expect(result).toEqual([{
+        id,
+        title,
+        description,
+        completed
+      }])
+    })
+  })
 })
