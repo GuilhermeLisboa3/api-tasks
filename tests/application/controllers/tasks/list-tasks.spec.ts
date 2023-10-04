@@ -1,5 +1,6 @@
 import { accountParams } from '@/tests/mocks'
 import { ListTasksController } from '@/application/controllers/tasks'
+import { Controller } from '@/application/controllers/controller'
 
 describe('ListTasksController', () => {
   let sut: ListTasksController
@@ -10,6 +11,10 @@ describe('ListTasksController', () => {
 
   beforeEach(() => {
     sut = new ListTasksController(listTasks)
+  })
+
+  it('should extend Controller', async () => {
+    expect(sut).toBeInstanceOf(Controller)
   })
 
   it('should call listTasks with correct values', async () => {
