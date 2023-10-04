@@ -41,4 +41,10 @@ describe('DeleteTask', () => {
     expect(tasksRepository.delete).toHaveBeenCalledWith({ id })
     expect(tasksRepository.delete).toHaveBeenCalledTimes(1)
   })
+
+  it('should return undefined on success', async () => {
+    const result = await sut({ id })
+
+    expect(result).toBeUndefined()
+  })
 })
