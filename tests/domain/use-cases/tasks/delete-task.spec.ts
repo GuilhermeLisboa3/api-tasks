@@ -1,5 +1,5 @@
 import { tasksParams } from '@/tests/mocks/'
-import { type LoadTaskById } from '@/domain/contracts/database/repositories/tasks'
+import { type DeleteTaskRepository, type LoadTaskById } from '@/domain/contracts/database/repositories/tasks'
 import { type DeleteTask, deleteTaskUseCase } from '@/domain/use-cases/tasks'
 import { NotFoundError } from '@/domain/errors'
 
@@ -10,7 +10,7 @@ describe('DeleteTask', () => {
 
   const { title, description, id, completed } = tasksParams
 
-  const tasksRepository = mock<LoadTaskById>()
+  const tasksRepository = mock<LoadTaskById & DeleteTaskRepository>()
 
   beforeAll(() => {
     tasksRepository.loadById.mockResolvedValue({ title, description, id, completed })
@@ -33,5 +33,12 @@ describe('DeleteTask', () => {
     const promise = sut({ id })
 
     await expect(promise).rejects.toThrow(new NotFoundError('id'))
+  })
+
+  it('should call DeleteTaskRepository with correct id', async () => {
+    await sut({ id })
+
+    expect(tasksRepository.delete).toHaveBeenCalledWith({ id })
+    expect(tasksRepository.delete).toHaveBeenCalledTimes(1)
   })
 })
