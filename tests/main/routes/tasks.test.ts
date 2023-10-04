@@ -13,7 +13,7 @@ import { AppModule } from '@/main/app.module'
 describe('Account Route', () => {
   let app: INestApplication
   let token: string
-  const { title, description } = tasksParams
+  const { title, description, completed } = tasksParams
   const { id, name, email, password } = accountParams
   const { secret } = configuration()
 
@@ -63,6 +63,17 @@ describe('Account Route', () => {
         .post('/add-tasks')
         .set({ authorization: `Bearer: ${token}` })
         .send({ title, description })
+      expect(status).toBe(204)
+    })
+  })
+
+  describe('/PUT update-tasks', () => {
+    it('should return 204 on success', async () => {
+      await prisma.task.create({ data: { id, title, description, userId: id, completed } })
+      const { status } = await request(app.getHttpServer())
+        .put('/update-task')
+        .set({ authorization: `Bearer: ${token}` })
+        .send({ id, title, description })
       expect(status).toBe(204)
     })
   })
