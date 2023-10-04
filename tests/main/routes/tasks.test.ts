@@ -77,4 +77,15 @@ describe('Account Route', () => {
       expect(status).toBe(204)
     })
   })
+
+  describe('/GET list-tasks', () => {
+    it('should return 200 on success', async () => {
+      await prisma.task.create({ data: { id, title, description, userId: id, completed } })
+      const { status, body } = await request(app.getHttpServer())
+        .get('/list-tasks')
+        .set({ authorization: `Bearer: ${token}` })
+      expect(status).toBe(200)
+      expect(body).toEqual([{ id, title, description, completed }])
+    })
+  })
 })

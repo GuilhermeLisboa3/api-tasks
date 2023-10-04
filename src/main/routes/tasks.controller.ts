@@ -2,10 +2,11 @@ import { AddTasksController, ListTasksController, UpdateTaskController } from '@
 import { nestResponseAdapter } from '@/main/adapters'
 import { type HttpResponse } from '@/application/helpers'
 import { AddTasksDto, UpdateTaskDto } from '@/main/routes/dto/tasks'
-import { swaggerBadRequest, swaggerInternalServerError, swaggerNoContent, swaggerNotFound } from '@/main/docs/swagger/paths'
+import { swaggerBadRequest, swaggerInternalServerError, swaggerNoContent, swaggerNotFound, swaggerOk } from '@/main/docs/swagger/paths'
 
 import { Body, Controller, Post, Request, Res, Put, Get } from '@nestjs/common'
 import { ApiBadRequestResponse, ApiInternalServerErrorResponse, ApiTags, ApiNoContentResponse, ApiNotFoundResponse, ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger'
+import { TaskResponse } from '../docs/swagger/shemas/task'
 
 @ApiBearerAuth()
 @ApiTags('tasks')
@@ -37,7 +38,7 @@ export class TasksController {
     return await nestResponseAdapter(response, res)
   }
 
-  @ApiOkResponse(swaggerNoContent())
+  @ApiOkResponse(swaggerOk(TaskResponse))
   @ApiInternalServerErrorResponse(swaggerInternalServerError())
   @Get('/list-tasks')
   async list (@Request() req, @Res() res): Promise<HttpResponse> {

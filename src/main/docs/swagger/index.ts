@@ -1,6 +1,7 @@
 import { type INestApplication } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { SchemaError, LoginResponse } from './shemas'
+import { TaskResponse } from './shemas/task'
 
 export function setupSwagger (app: INestApplication): void {
   const config = new DocumentBuilder()
@@ -11,7 +12,7 @@ export function setupSwagger (app: INestApplication): void {
     .addTag('account')
     .build()
 
-  const document = SwaggerModule.createDocument(app, config, { extraModels: [SchemaError, LoginResponse] })
+  const document = SwaggerModule.createDocument(app, config, { extraModels: [SchemaError, LoginResponse, TaskResponse] })
 
   SwaggerModule.setup('api-docs', app, document)
 }
