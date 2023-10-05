@@ -88,4 +88,15 @@ describe('Account Route', () => {
       expect(body).toEqual([{ id, title, description, completed }])
     })
   })
+
+  describe('/DELETE list-tasks', () => {
+    it('should return 204 on success', async () => {
+      await prisma.task.create({ data: { id, title, description, userId: id, completed } })
+      const { status } = await request(app.getHttpServer())
+        .delete('/delete-task')
+        .set({ authorization: `Bearer: ${token}` })
+        .send({ id })
+      expect(status).toBe(204)
+    })
+  })
 })
