@@ -62,4 +62,14 @@ describe('TasksRepository', () => {
       }])
     })
   })
+
+  describe('delete()', () => {
+    it('should return undefined on success delete', async () => {
+      await prisma.task.create({ data: { id, title, description, completed, userId: id } })
+
+      const result = await sut.delete({ id })
+
+      expect(result).toBeUndefined()
+    })
+  })
 })
