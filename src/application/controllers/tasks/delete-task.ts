@@ -1,11 +1,14 @@
 import { type DeleteTask } from '@/domain/use-cases/tasks'
+import { Controller } from '../controller'
+import { type HttpResponse } from '@/application/helpers'
 
 type HttpRequest = { id: string }
 
-export class DeleteTaskController {
-  constructor (private readonly deleteTask: DeleteTask) {}
+export class DeleteTaskController extends Controller {
+  constructor (private readonly deleteTask: DeleteTask) { super() }
 
-  async perform (input: HttpRequest): Promise<void> {
+  async perform (input: HttpRequest): Promise<HttpResponse> {
     await this.deleteTask(input)
+    return { statusCode: 200, data: null }
   }
 }
