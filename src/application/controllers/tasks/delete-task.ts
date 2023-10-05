@@ -1,6 +1,6 @@
 import { type DeleteTask } from '@/domain/use-cases/tasks'
 import { Controller } from '../controller'
-import { type HttpResponse } from '@/application/helpers'
+import { noContent, type HttpResponse } from '@/application/helpers'
 
 type HttpRequest = { id: string }
 
@@ -9,6 +9,6 @@ export class DeleteTaskController extends Controller {
 
   async perform (input: HttpRequest): Promise<HttpResponse> {
     await this.deleteTask(input)
-    return { statusCode: 200, data: null }
+    return noContent()
   }
 }
