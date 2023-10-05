@@ -1,5 +1,6 @@
 import { tasksParams } from '@/tests/mocks'
 import { DeleteTaskController } from '@/application/controllers/tasks'
+import { Controller } from '@/application/controllers/controller'
 
 describe('DeleteTaskController', () => {
   let sut: DeleteTaskController
@@ -10,6 +11,10 @@ describe('DeleteTaskController', () => {
 
   beforeEach(() => {
     sut = new DeleteTaskController(deleteTask)
+  })
+
+  it('should extend Controller', async () => {
+    expect(sut).toBeInstanceOf(Controller)
   })
 
   it('should call deleteTask with correct values', async () => {
