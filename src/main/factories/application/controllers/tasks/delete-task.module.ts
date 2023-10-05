@@ -8,8 +8,8 @@ import { DeleteTaskModule } from '@/main/factories/domain/use-cases/tasks'
   providers: [
     {
       provide: DeleteTaskController,
-      useFactory: (updateTask: DeleteTask) => {
-        return new DeleteTaskController(updateTask)
+      useFactory: (deleteTask: DeleteTask) => {
+        return new DeleteTaskController(deleteTask)
       },
       inject: [deleteTaskUseCase]
     }
