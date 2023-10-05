@@ -32,4 +32,11 @@ describe('DeleteTaskController', () => {
     expect(statusCode).toBe(404)
     expect(data).toEqual(new NotFoundError('id'))
   })
+
+  it('should return noContent on success', async () => {
+    const { statusCode, data } = await sut.perform({ id })
+
+    expect(statusCode).toBe(204)
+    expect(data).toBeNull()
+  })
 })
